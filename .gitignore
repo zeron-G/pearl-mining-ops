@@ -1,0 +1,21 @@
+.env
+.env.*
+!.env.example
+local.env
+*.log
+*.pid
+dashboard*.png
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.venv/
+venv/
+dist/
+build/
+*.egg-info/
+
+# Local runtime artifacts. Recreate with scripts/download-miners.ps1.
+downloads/
+alphapool/alpha-miner
+pearlhash/pearl-miner

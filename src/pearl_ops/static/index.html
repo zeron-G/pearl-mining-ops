@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pearl Ops</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Local monitor</p>
+          <h1>Pearl Ops</h1>
+        </div>
+        <div class="actions">
+          <button id="refreshBtn" type="button" title="刷新">Refresh</button>
+          <button id="startBtn" type="button" title="切换并启动默认矿池">Start</button>
+          <button id="stopBtn" type="button" title="停止所有本地矿工">Stop</button>
+        </div>
+      </header>
+
+      <section class="status-strip" aria-label="运行状态">
+        <div>
+          <span class="label">Miner</span>
+          <strong id="minerState">Loading</strong>
+        </div>
+        <div>
+          <span class="label">Pool</span>
+          <strong id="poolState">-</strong>
+        </div>
+        <div>
+          <span class="label">Hashrate</span>
+          <strong id="hashrateState">-</strong>
+        </div>
+        <div>
+          <span class="label">GPU</span>
+          <strong id="gpuState">-</strong>
+        </div>
+        <div>
+          <span class="label">SafeTrade</span>
+          <strong id="safeState">-</strong>
+        </div>
+      </section>
+
+      <section class="workspace">
+        <div class="primary">
+          <section class="panel">
+            <div class="section-head">
+              <div>
+                <h2>Pipeline</h2>
+                <p>挖矿、矿池、充值地址、SafeTrade 和提现开关。</p>
+              </div>
+              <span id="updatedAt" class="muted">-</span>
+            </div>
+            <div class="timeline" id="pipeline"></div>
+          </section>
+
+          <section class="panel">
+            <div class="section-head">
+              <div>
+                <h2>Miner Log</h2>
+                <p>默认显示 PearlHash 日志；切池后这里会自动更新。</p>
+              </div>
+              <a id="poolLink" target="_blank" rel="noreferrer">Pool dashboard</a>
+            </div>
+            <pre id="logTail" class="log"></pre>
+          </section>
+        </div>
+
+        <aside class="side">
+          <section class="panel compact">
+            <h2>Wallet</h2>
+            <dl id="walletBox"></dl>
+          </section>
+
+          <section class="panel compact">
+            <h2>GPU</h2>
+            <dl id="gpuBox"></dl>
+          </section>
+
+          <section class="panel compact">
+            <h2>SafeTrade</h2>
+            <dl id="safeBox"></dl>
+          </section>
+
+          <section class="panel compact">
+            <h2>Config</h2>
+            <dl id="configBox"></dl>
+          </section>
+        </aside>
+      </section>
+    </main>
+    <script src="/app.js"></script>
+  </body>
+</html>
