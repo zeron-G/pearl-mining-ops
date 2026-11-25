@@ -88,7 +88,7 @@ def get_settings(root: Path = ROOT) -> Settings:
         safetrade_prl_market=env.get("SAFETRADE_PRL_MARKET", "prlusdt").lower(),
         pearlhash_host=env.get("PEARLHASH_HOST", "84.32.220.219:9000"),
         alphapool_pool=env.get("ALPHAPOOL_POOL", "stratum+tcp://us2.alphapool.tech:5566"),
-        miner_worker=env.get("MINER_WORKER", "desktop5090"),
+        miner_worker=env.get("MINER_WORKER", "worker01"),
         alphapool_password=env.get("ALPHAPOOL_PASSWORD", "x;d=1048576"),
         dashboard_host=env.get("DASHBOARD_HOST", "127.0.0.1"),
         dashboard_port=int(env.get("DASHBOARD_PORT", "8787")),

@@ -6,6 +6,8 @@ from typing import Any
 
 import requests
 
+from .address import validate_prl_address
+
 
 SATOSHIS_PER_PRL = Decimal("100000000")
 
@@ -19,13 +21,6 @@ class AddressSummary:
     total_mined_prl: Decimal | None
     tx_count: int | None
     raw: dict[str, Any]
-
-
-def validate_prl_address(address: str) -> None:
-    if not address.startswith("prl1p"):
-        raise ValueError("Pearl mainnet addresses should start with prl1p")
-    if len(address) < 40:
-        raise ValueError("Pearl address looks too short")
 
 
 def _to_prl(value: Any) -> Decimal:
