@@ -40,7 +40,7 @@ class MinerManager:
                 "--",
                 "bash",
                 "-lc",
-                "ps -ef | grep -E '[a]lpha-miner|[p]earl-miner' || true",
+                "ps -C alpha-miner,pearl-miner,wildrig-multi -o pid=,etime=,comm= || true",
             ],
             self.settings.root,
         )
@@ -48,7 +48,7 @@ class MinerManager:
         active_pool = None
         if "alpha-miner" in output:
             active_pool = "alphapool"
-        if "pearl-miner --host" in output:
+        if "pearl-miner" in output or "wildrig-multi" in output:
             active_pool = "pearlhash"
         return MinerStatus(running=bool(output), output=output, active_pool=active_pool)
 
@@ -135,6 +135,13 @@ class MinerManager:
         ]
         submitted = len(re.findall(r"share submitted|accepted|Accepted", text, re.IGNORECASE))
         rejected = len(re.findall(r"reject|rejected|stale", text, re.IGNORECASE))
+        if "WildRig/" in text or "[ver. 0.52." in text:
+            hashrates = [float(v) for v in re.findall(r"^\s*10s:\s*([\d.]+) TH/s", text, re.M)]
+            def last_counter(name: str) -> int:
+                values = re.findall(rf"{name}:\s*(\d+|-)", text)
+                return int(values[-1]) if values and values[-1].isdigit() else 0
+            submitted = last_counter("Accepted")
+            rejected = last_counter("Rejected")
         connected = bool(
             re.search(
                 r"connected|login success|received new job|loaded new job|hashrate|workspace_ready|mining",

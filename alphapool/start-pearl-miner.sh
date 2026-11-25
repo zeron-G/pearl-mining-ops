@@ -11,7 +11,7 @@ fi
 
 ADDRESS="${PEARL_ADDRESS:-}"
 POOL="${ALPHAPOOL_POOL:-stratum+tcp://us2.alphapool.tech:5566}"
-WORKER="${MINER_WORKER:-desktop5090}"
+WORKER="${MINER_WORKER:-worker01}"
 PASSWORD="${ALPHAPOOL_PASSWORD:-x;d=1048576}"
 if [[ -z "$ADDRESS" ]]; then
   echo "PEARL_ADDRESS is not set. Add it to .env."

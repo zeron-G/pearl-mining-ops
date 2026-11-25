@@ -12,6 +12,50 @@ The project is safe by default:
 - withdrawals are disabled unless an endpoint is verified and explicitly enabled
 - SafeTrade calls support dry-run diagnostics before any order is placed
 
+## Mining pipeline (Windows + WSL2)
+
+On a new checkout run these commands in PowerShell, in order:
+
+```powershell
+.\pipeline.ps1 setup  # Create .env if absent; install/verify the pinned Linux binary
+notepad .env          # Set PEARL_ADDRESS to your native Pearl receiving address
+.\pipeline.ps1 start  # Verify binary and GPU, then launch one time-limited worker
+.\pipeline.ps1 status # Local miner processes, pool workers and balance entry count
+.\pipeline.ps1 logs   # Follow reports and share responses; Ctrl+C only stops the viewer
+.\pipeline.ps1 stop   # Stop the managed miner early
+```
+
+Setup/start need Bash, curl, tar, util-linux, coreutils, Python 3 in Ubuntu
+and a WSL-visible NVIDIA GPU. Setup does not mine, change GPU clocks, or
+overwrite existing settings. With a pre-existing .env, copy in the mining
+keys below. No exchange login, private key, or seed phrase is needed.
+The optional Python dashboard install is separate.
+
+An exchange payout requires an active native-network deposit address, an
+eligible payout amount, and exchange confirmations. Check the receiving
+exchange before using it. Pool accounting entries do not prove exchange
+credit. This pipeline does not sell, withdraw or transfer existing balances.
+
+The installer uses the Linux 0.52.3 release from
+[upstream](https://github.com/andru-kun/wildrig-multi/releases/tag/0.52.3).
+Verify the release archive SHA-256
+(`7308c95f7c8c4c0d82aade61bb4ab3366decae2b9d04ac47b8c1dc6d1bdd2c44`)
+and extract its executable to `downloads/wildrig-0.52.3/wildrig-multi`.
+Make it executable in WSL. In your ignored `.env`, set:
+
+```dotenv
+PEARLHASH_ENGINE=wildrig
+DEFAULT_POOL=pearlhash
+PEARLHASH_URL=pool.pearlhash.xyz:9000
+PEARL_TRIAL_TEMP=75
+PEARL_TRIAL_SECONDS=28800
+```
+
+Set `PEARL_ADDRESS` to your own verified native receive address.
+`start-miner.ps1`, `stop-miner.ps1`, and `tail-miner.ps1` operate on this
+trial. It stops after the configured duration. An accepted share is not a
+payout or proof of exchange credit. No exchange credentials are required.
+
 ## Features
 
 - Start, stop, and tail AlphaPool or PearlHash miners.
@@ -68,7 +112,7 @@ pip install -e .
 Create local config:
 
 ```powershell
-Copy-Item .env.example .env
+if (!(Test-Path .env)) { Copy-Item .env.example .env }
 notepad .env
 ```
 
@@ -99,10 +143,8 @@ Miner binaries are intentionally not committed. Download them locally:
 .\scripts\download-miners.ps1
 ```
 
-This fetches:
-
-- AlphaPool miner into `alphapool/alpha-miner`
-- PearlHash miner into `pearlhash/pearl-miner`
+This aliases `pipeline.ps1 setup` and installs only the pinned WildRig.
+The legacy AlphaPool controls require a separately installed AlphaPool binary.
 
 ## Miner Commands
 

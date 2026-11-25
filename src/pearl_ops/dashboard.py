@@ -32,13 +32,10 @@ def _safe_call(fn):
 
 
 def _runtime_hours(process_output: str) -> float | None:
-    match = re.search(r"\s((?:(\d+)-)?(\d{2}):(\d{2}):(\d{2}))\s+\./pearl-miner", process_output)
+    match = re.search(r"^\s*\d+\s+(?:(\d+)-)?(?:(\d+):)?(\d+):(\d+)\s+(?:wildrig-multi|pearl-miner|alpha-miner)$", process_output, re.M)
     if not match:
         return None
-    days = int(match.group(2) or 0)
-    hours = int(match.group(3))
-    minutes = int(match.group(4))
-    seconds = int(match.group(5))
+    days, hours, minutes, seconds = (int(v or 0) for v in match.groups())
     return days * 24 + hours + minutes / 60 + seconds / 3600
 
 
